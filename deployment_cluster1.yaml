@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-app-test-deploy
-  namespace: autopilot-cluster-1
+  namespace: quality
 spec:
   replicas: 3
   selector:
