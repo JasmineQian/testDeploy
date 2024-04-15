@@ -10,11 +10,16 @@ spec:
   serialPipeline:
     stages:
     - targetId: dev
-      # profiles:
-      # - dev
-    # - targetId: staging
-    #   profiles:
-    #   - staging
     - targetId: prod
-    #   profiles:
-    #   - prod
+
+#      serialPipeline:
+#        stages:
+#          - targetId: dev
+#            # profiles:
+#            # - dev
+#          # - targetId: staging
+#          #   profiles:
+#          #   - staging
+#          - targetId: prod
+#        #   profiles:
+#        #   - prod
