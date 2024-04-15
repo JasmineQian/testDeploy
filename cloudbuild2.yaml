@@ -1,0 +1,33 @@
+steps:
+# Step 1: Build the Docker Image
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest', '.' ]
+
+# Step 2: Push the image to the Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest' ]
+
+
+# Step 3: Deployment to Kubernetes Engine cluster1
+- name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - 'apply'
+  - '-f'
+  - 'deployment_cluster1.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster1
+  - '-n'
+  - 'autopilot-cluster-1'  # Replace with the namespace for cluster1
+
+# Step 4: Manual approval
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['alpha', 'builds', 'approvals', 'approve', '$BUILD_ID']
+  id: 'approval'
+  waitFor: ['-']
+
+# Step 5: Deployment to Kubernetes Engine cluster2
+- name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - 'apply'
+  - '-f'
+  - 'deployment_cluster2.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster2
+  - '-n'
+  - 'autopilot-cluster-2'  # Replace with the namespace for cluster2
