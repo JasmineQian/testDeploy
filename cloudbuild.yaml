@@ -1,11 +1,11 @@
 steps:
 # Step 1: Build the Docker Image
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'us-central1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest', '.' ]
+  args: [ 'build', '-t', 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest', '.' ]
 
 # Step 2: Push the image to the Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'push', 'us-central1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest' ]
+  args: [ 'push', 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest' ]
 
 
 # Step 3: Deployment to Cloud Run after image is pushed
@@ -15,7 +15,7 @@ steps:
   - 'deploy'
   - 'my-service'  # Replace with your service name
   - '--image'
-  - 'us-central1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest'
+  - 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest'
   - '--region'
   - 'us-central1'  # You can change this if you want to deploy to a different region
   - '--platform'
