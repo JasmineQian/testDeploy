@@ -26,6 +26,7 @@ steps:
   - |
     export CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1
     export CLOUDSDK_COMPUTE_REGION=us-central1 # Replace <region> with your cluster region
+    export CLOUDSDK_COMPUTE_ZONE=us-central1-a
     gcloud container clusters get-credentials autopilot-cluster-1 --region=us-central1 # Replace <region> with your cluster region
     kubectl apply -f deployment_cluster1.yaml -n quality
   env:
