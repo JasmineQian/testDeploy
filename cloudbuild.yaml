@@ -17,17 +17,33 @@ steps:
   - '-n'
   - 'gke_liveramp-eng-qa-reliability_us-central1_autopilot-cluster-1'  # Replace with the namespace for cluster1
 
+
+# Step 3: Deployment to Kubernetes Engine autopilot-cluster-1
+- name: 'gcr.io/cloud-builders/kubectl'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    export CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1
+    export CLOUDSDK_COMPUTE_REGION=us-central1 # Replace <region> with your cluster region
+    gcloud container clusters get-credentials autopilot-cluster-1 --region=us-central1 # Replace <region> with your cluster region
+    kubectl apply -f deployment_cluster1.yaml -n quality
+  env:
+  - 'CLOUDSDK_COMPUTE_REGION=us-central1'  # Replace <region> with your cluster region
+  - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'
+
+
 ## Step 4: Manual approval
 #- name: 'gcr.io/cloud-builders/gcloud'
 #  args: ['alpha', 'builds', 'approvals', 'approve', '$BUILD_ID']
 #  id: 'approval'
 #  waitFor: ['-']
 
-# Step 5: Deployment to Kubernetes Engine cluster2
-- name: 'gcr.io/cloud-builders/kubectl'
-  args:
-  - 'apply'
-  - '-f'
-  - 'deployment_cluster2.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster2
-  - '-n'
-  - 'gke_liveramp-eng-qa-reliability_us-central1_autopilot-cluster-2'  # Replace with the namespace for cluster2
+## Step 5: Deployment to Kubernetes Engine cluster2
+#- name: 'gcr.io/cloud-builders/kubectl'
+#  args:
+#  - 'apply'
+#  - '-f'
+#  - 'deployment_cluster2.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster2
+#  - '-n'
+#  - 'gke_liveramp-eng-qa-reliability_us-central1_autopilot-cluster-2'  # Replace with the namespace for cluster2
