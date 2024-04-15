@@ -45,8 +45,10 @@ steps:
     gcloud deploy apply --file deploy/pipeline.yaml --region=us-central1
     gcloud deploy apply --file deploy/dev.yaml --region=us-central1
     gcloud deploy releases create 'app-release_${SHORT_SHA}' --delivery-pipeline='gke-cicd-pipeline' --region=us-central1 --skaffold-file=skaffold.yaml
-  options:
-    logging:CLOUD_LOGGING_ONLY
+#
+#
+#  options:
+#    logging:CLOUD_LOGGING_ONLY
 
 
 ## Step 4: Manual approval
