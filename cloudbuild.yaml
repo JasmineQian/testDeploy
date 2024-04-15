@@ -8,18 +8,26 @@ steps:
   args: [ 'push', 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest' ]
 
 
-# Step 3: Deployment to Cloud Run after image is pushed
-- name: 'gcr.io/cloud-builders/gcloud'
+# Step 3: Deployment to Kubernetes Engine cluster1
+- name: 'gcr.io/cloud-builders/kubectl'
   args:
-  - 'run'
-  - 'deploy'
-  - 'my-service'  # Replace with your service name
-  - '--image'
-  - 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest'
-  - '--region'
-  - 'us-central1'  # You can change this if you want to deploy to a different region
-  - '--platform'
-  - 'managed'
-  # Optional: if you want to allow unauthenticated access
-  - '--allow-unauthenticated'
+  - 'apply'
+  - '-f'
+  - 'deployment_cluster1.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster1
+  - '-n'
+  - 'autopilot-cluster-1'  # Replace with the namespace for cluster1
 
+# Step 4: Manual approval
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['alpha', 'builds', 'approvals', 'approve', '$BUILD_ID']
+  id: 'approval'
+  waitFor: ['-']
+
+# Step 5: Deployment to Kubernetes Engine cluster2
+- name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - 'apply'
+  - '-f'
+  - 'deployment_cluster2.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster2
+  - '-n'
+  - 'autopilot-cluster-2'  # Replace with the namespace for cluster2

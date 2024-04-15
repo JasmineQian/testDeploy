@@ -1,0 +1,25 @@
+steps:
+# Step 1: Build the Docker Image
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest', '.' ]
+
+# Step 2: Push the image to the Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest' ]
+
+
+# Step 3: Deployment to Cloud Run after image is pushed
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+  - 'run'
+  - 'deploy'
+  - 'my-service'  # Replace with your service name
+  - '--image'
+  - 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest'
+  - '--region'
+  - 'us-central1'  # You can change this if you want to deploy to a different region
+  - '--platform'
+  - 'managed'
+  # Optional: if you want to allow unauthenticated access
+  - '--allow-unauthenticated'
+
