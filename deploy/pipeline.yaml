@@ -5,14 +5,16 @@ metadata:
   labels:
     app: cicd
 description: cicd delivery pipeline
-serialPipeline:
-  stages:
-  - targetId: dev
-    # profiles:
-    # - dev
-  # - targetId: staging
-  #   profiles:
-  #   - staging
-  - targetId: prod
-  #   profiles:
-  #   - prod
+spec:
+  serviceAccountName: 169583833794-compute@developer.gserviceaccount.com
+  serialPipeline:
+    stages:
+    - targetId: dev
+      # profiles:
+      # - dev
+    # - targetId: staging
+    #   profiles:
+    #   - staging
+    - targetId: prod
+    #   profiles:
+    #   - prod
