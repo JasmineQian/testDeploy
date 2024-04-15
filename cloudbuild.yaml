@@ -15,7 +15,7 @@ steps:
   - '-f'
   - 'deployment_cluster1.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster1
   - '-n'
-  - 'autopilot-cluster-1'  # Replace with the namespace for cluster1
+  - 'gke_liveramp-eng-qa-reliability_us-central1_autopilot-cluster-1'autopilot-cluster-1'  # Replace with the namespace for cluster1
 
 # Step 4: Manual approval
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -30,4 +30,4 @@ steps:
   - '-f'
   - 'deployment_cluster2.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster2
   - '-n'
-  - 'autopilot-cluster-2'  # Replace with the namespace for cluster2
+  - 'gke_liveramp-eng-qa-reliability_us-central1_autopilot-cluster-2'  # Replace with the namespace for cluster2
