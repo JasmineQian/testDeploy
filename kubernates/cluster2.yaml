@@ -1,20 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app-test-deploy
-  namespace: quality
+  name: my-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: my-app-test-deploy
+      app: my-app
   template:
     metadata:
       labels:
-        app: my-app-test-deploy
+        app: my-app
     spec:
       containers:
-      - name: my-app-test-deploy
-        image: us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest
-        ports:
-        - containerPort: 8080
+        - name: my-container
+          image: us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest
+          ports:
+            - containerPort: 8080
