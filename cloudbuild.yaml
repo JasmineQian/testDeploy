@@ -8,14 +8,14 @@ steps:
   args: [ 'push', 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest' ]
 
 
-# Step 3: Deployment to Kubernetes Engine cluster1
-- name: 'gcr.io/cloud-builders/kubectl'
-  args:
-  - 'apply'
-  - '-f'
-  - 'deployment_cluster1.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster1
-  - '-n'
-  - 'gke_liveramp-eng-qa-reliability_us-central1_autopilot-cluster-1'  # Replace with the namespace for cluster1
+## Step 3: Deployment to Kubernetes Engine cluster1
+#- name: 'gcr.io/cloud-builders/kubectl'
+#  args:
+#  - 'apply'
+#  - '-f'
+#  - 'deployment_cluster1.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster1
+#  - '-n'
+#  - 'gke_liveramp-eng-qa-reliability_us-central1_autopilot-cluster-1'  # Replace with the namespace for cluster1
 
 
 # Step 3: Deployment to Kubernetes Engine autopilot-cluster-1
