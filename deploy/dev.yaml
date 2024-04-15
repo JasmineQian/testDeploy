@@ -1,0 +1,9 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: dev
+  annotations: {}
+  labels: {}
+description: dev
+gke:
+  cluster: projects/liveramp-eng-qa-reliability/locations/us-central1/clusters/autopilot-cluster-1

@@ -2,10 +2,12 @@ steps:
 # Step 1: Build the Docker Image
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest', '.' ]
+  id: 'Build Docker Image'
 
 # Step 2: Push the image to the Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'push', 'us-east1-docker.pkg.dev/liveramp-eng-qa-reliability/test-deploy/test_001:latest' ]
+  id: 'Push Docker Image'
 
 
 ## Step 3: Deployment to Kubernetes Engine cluster1
@@ -13,25 +15,38 @@ steps:
 #  args:
 #  - 'apply'
 #  - '-f'
-#  - 'deployment_cluster1.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster1
+#  - 'cluster1.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster1
 #  - '-n'
 #  - 'gke_liveramp-eng-qa-reliability_us-central1_autopilot-cluster-1'  # Replace with the namespace for cluster1
 
 
+## Step 3: Deployment to Kubernetes Engine autopilot-cluster-1
+#- name: 'gcr.io/cloud-builders/kubectl'
+#  entrypoint: 'bash'
+#  args:
+#  - '-c'
+#  - |
+#    export CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1
+#    export CLOUDSDK_COMPUTE_REGION=us-central1 # Replace <region> with your cluster region
+#    export CLOUDSDK_COMPUTE_ZONE=us-central1-a
+#    gcloud container clusters get-credentials autopilot-cluster-1 --region=us-central1 # Replace <region> with your cluster region
+#    kubectl apply -f cluster1.yaml -n quality
+#  env:
+#  - 'CLOUDSDK_COMPUTE_REGION=us-central1'  # Replace <region> with your cluster region
+#  - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'
+
 # Step 3: Deployment to Kubernetes Engine autopilot-cluster-1
-- name: 'gcr.io/cloud-builders/kubectl'
-  entrypoint: 'bash'
+- name: 'google/cloud-sdk:latest
+  entrypoint: 'sh'
   args:
-  - '-c'
+  - -xe
+  - -c
   - |
-    export CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1
-    export CLOUDSDK_COMPUTE_REGION=us-central1 # Replace <region> with your cluster region
-    export CLOUDSDK_COMPUTE_ZONE=us-central1-a
-    gcloud container clusters get-credentials autopilot-cluster-1 --region=us-central1 # Replace <region> with your cluster region
-    kubectl apply -f deployment_cluster1.yaml -n quality
-  env:
-  - 'CLOUDSDK_COMPUTE_REGION=us-central1'  # Replace <region> with your cluster region
-  - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'
+    gcloud deploy apply --file deploy/pipeline.yaml --region=us-central1
+    gcloud deploy apply --file deploy/cluster1.yaml --region=us-central1
+    gcloud deploy releases create 'ap1-release_${SHORT_SHA}' --delivery-pipeline='app1-pipeline' --region=us-central1 --skaffold-file=skaffold.yaml
+  options:
+    logging:CLOUD_LOGGING_ONLY
 
 
 ## Step 4: Manual approval
@@ -45,6 +60,6 @@ steps:
 #  args:
 #  - 'apply'
 #  - '-f'
-#  - 'deployment_cluster2.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster2
+#  - 'cluster2.yaml' # Replace with the path to your Kubernetes deployment manifest for cluster2
 #  - '-n'
 #  - 'gke_liveramp-eng-qa-reliability_us-central1_autopilot-cluster-2'  # Replace with the namespace for cluster2
