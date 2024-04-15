@@ -17,11 +17,11 @@ steps:
   - '-n'
   - 'gke_liveramp-eng-qa-reliability_us-central1_autopilot-cluster-1'  # Replace with the namespace for cluster1
 
-# Step 4: Manual approval
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['alpha', 'builds', 'approvals', 'approve', '$BUILD_ID']
-  id: 'approval'
-  waitFor: ['-']
+## Step 4: Manual approval
+#- name: 'gcr.io/cloud-builders/gcloud'
+#  args: ['alpha', 'builds', 'approvals', 'approve', '$BUILD_ID']
+#  id: 'approval'
+#  waitFor: ['-']
 
 # Step 5: Deployment to Kubernetes Engine cluster2
 - name: 'gcr.io/cloud-builders/kubectl'
