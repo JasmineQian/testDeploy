@@ -2,15 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-deployment
+  labels:
+    type: backend
+    app: jas-app
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: my-app
+      type: backend
+      app: jas-app
   template:
     metadata:
+      name: my-deployment
       labels:
-        app: my-app
+        type: backend
+        app: jas-app
     spec:
       containers:
         - name: my-container
