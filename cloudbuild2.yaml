@@ -1,3 +1,4 @@
+# in the progress of building the pipeline -- not working
 steps:
 # Step 1: Build the Docker Image
 - name: 'gcr.io/cloud-builders/docker'
